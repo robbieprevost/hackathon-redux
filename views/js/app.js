@@ -27,6 +27,7 @@ var myApp = angular.module('myApp', ['ngRoute']).factory('socket', function ($ro
 var myController = myApp.controller('myController', function($scope, $rootScope, socket){
 
     $scope.data = {
+        user : null,
         features: [{
             icon: '',
             title: '',
@@ -92,10 +93,17 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
         back : function(){
             $scope.view.main = true;
             $scope.view.feature = null;
+            $scope.view.login = false;
+        },
+        goToLogin : function(){
+            $scope.view.main = false;
+            $scope.view.feature = null;
+            $scope.view.login = true;
         }
     };
     $scope.view = {
-        main: true
+        main: false,
+        login: true
     };
 
     socket.on('hello', function(data){

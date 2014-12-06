@@ -51,18 +51,40 @@
         </div>
 
         <div id="{{feature.id}}" class="feature-details" ng-show="view.feature == feature.id">
-            <p>{{feature.description}}</p>
-
-
+            <p class="features-description">{{feature.description}}</p>
             <h3 class="comments-header">Comments:</h3>
             <div class="comments" ng-repeat="comment in feature.comments">
                 <p class="comment">{{comment.name}}:&nbsp{{comment.comment}}</p>
             </div>
-            <form>
-                <input type="text" placeholder="enter your name" required><br>
+            <form ng-show="data.user">
                 <input type="text" placeholder="enter your comment" required>
                 <button class="btn btn-lg btn-success">submit</button>
             </form>
+            <div class="login-link-container" ng-show="!data.user">
+                <button class="btn btn-lg btn-default" ng-click="data.goToLogin()">login</button>
+                &nbsp;or&nbsp;
+                <button class="btn btn-lg btn-default">register</button>
+                &nbsp;to comment.
+            </div>
+        </div>
+    </div>
+    <div class="login-register-container" ng-show="view.login">
+        <div class="login">
+            <h1>Login:</h1>
+            <form>
+                <input ng-bind="data.username" type="text" placeholder="username">
+                <br>
+                <input ng-bind="data.password" type="password" placeholder="password">
+                <br>
+                <br>
+                <button class="btn btn-large btn-primary">login</button>
+            </form>
+            <br>
+            Or login with:
+            <br>
+            <button>
+                <img src="img/FB-f-Logo__blue_100.png">
+            </button>
         </div>
     </div>
     <button class="btn btn-lg btn-warning back" ng-show="!view.main" ng-click="data.back()">back</button>

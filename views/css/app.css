@@ -51,6 +51,13 @@ font-size: 1.5em;
     padding-right: 15px;
     margin: 10px;
 }
+
+.features-description {
+    padding-top: 50px;
+    font-size: 18px;
+    color: #ccccc0;
+}
+
 .comments-header{
     color: #eeeeee;
 }
@@ -63,4 +70,20 @@ font-size: 1.5em;
     position: absolute;
     left: 10px;
     top: 0;
+}
+
+.login-link-container {
+    color: #eeeeff;
+}
+
+.login-register-container {
+    margin: 10% auto;
+    background-color: #eeeeee;
+    z-index: 5;
+}
+
+.login {
+    z-index: 6;
+    padding-top: 5%;
+    padding-left: 5%;
 }
