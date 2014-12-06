@@ -63,28 +63,56 @@
             <div class="login-link-container" ng-show="!data.user">
                 <button class="btn btn-lg btn-default" ng-click="data.goToLogin()">login</button>
                 &nbsp;or&nbsp;
-                <button class="btn btn-lg btn-default">register</button>
+                <button class="btn btn-lg btn-default" ng-click="data.goToRegister()">register</button>
                 &nbsp;to comment.
             </div>
         </div>
     </div>
-    <div class="login-register-container" ng-show="view.login">
-        <div class="login">
+    <div class="login-register-container" ng-show="view.account.login || view.account.register">
+        <div class="login" ng-show="view.account.login">
             <h1>Login:</h1>
             <form>
-                <input ng-bind="data.username" type="text" placeholder="username">
+                <input ng-bind="data.user.username" type="text" placeholder="username">
                 <br>
-                <input ng-bind="data.password" type="password" placeholder="password">
+                <input ng-bind="data.user.password" type="password" placeholder="password">
                 <br>
                 <br>
-                <button class="btn btn-large btn-primary">login</button>
+                <button class="btn btn-lg btn-primary">login</button>
             </form>
             <br>
             Or login with:
             <br>
             <button>
-                <img src="img/FB-f-Logo__blue_100.png">
+                <img src="img/FB-f-Logo__blue_100.png" alt="facebook logo">
             </button>
+        </div>
+        <div class="register" ng-show="view.register.choose || view.register.email">
+            <div class="choose" ng-show="view.register.choose">
+                <h1>Register with:</h1>
+                <br>
+                <button class="btn btn-lg btn-primary" ng-click="data.goToEmailRegister()">email</button>
+                <br>
+                <br>
+                or
+                <br>
+                <br>
+                <button><img src="img/FB-f-Logo__blue_100.png" alt="facebook logo"></button>
+            </div>
+            <div class="email-register" ng-show="view.register.email">
+                <form>
+                    <h1>Register an account:</h1>
+                    <br><br>
+                    <input type="text" ng-bind="data.user.username" placeholder="username" required>
+                    <br><br>
+                    <input type="email" ng-bind="data.user.email" placeholder="email" required>
+                    <br><br>
+                    <input type="text" ng-bind="data.user.twitter" placeholder="twitter username">(optional)
+                    <br><br>
+                    <input type="password" ng-bind="data.user.password" placeholder="password" required>
+                    <br><br>
+                    <button class="btn btn-lg btn-primary">submit</button>
+                </form>
+            </div>
         </div>
     </div>
     <button class="btn btn-lg btn-warning back" ng-show="!view.main" ng-click="data.back()">back</button>

@@ -93,17 +93,46 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
         back : function(){
             $scope.view.main = true;
             $scope.view.feature = null;
-            $scope.view.login = false;
+            $scope.view.account.login = false;
+            $scope.view.account.register = false;
+            $scope.view.register.choose = false;
+            $scope.view.register.email = false;
         },
         goToLogin : function(){
             $scope.view.main = false;
             $scope.view.feature = null;
-            $scope.view.login = true;
+            $scope.view.account.login = true;
+            $scope.view.account.register = false;
+            $scope.view.register.choose = false;
+            $scope.view.register.email = false;
+        },
+        goToRegister : function(){
+            $scope.view.main = false;
+            $scope.view.feature = null;
+            $scope.view.account.login = false;
+            $scope.view.account.register = true;
+            $scope.view.register.choose = true;
+            $scope.view.register.email = false;
+        },
+        goToEmailRegister : function(){
+            $scope.view.main = false;
+            $scope.view.feature = null;
+            $scope.view.account.login = false;
+            $scope.view.account.register = true;
+            $scope.view.register.choose = false;
+            $scope.view.register.email = true;
         }
     };
     $scope.view = {
         main: false,
-        login: true
+        account:{
+            login: false,
+            register: true
+        },
+        register: {
+            choose: true,
+            email: false
+        }
     };
 
     socket.on('hello', function(data){

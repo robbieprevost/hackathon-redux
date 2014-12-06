@@ -27,7 +27,7 @@ font-size: 1.5em;
 .feature {
     width: 250px;
     height: 300px;
-    background-color: #c7d3c2;
+    background-color: #dddddd;
     float: left;
     margin: 10px 10px;
     box-shadow: inset 0 0 10px #333333;
@@ -83,6 +83,12 @@ font-size: 1.5em;
 }
 
 .login {
+    z-index: 6;
+    padding-top: 5%;
+    padding-left: 5%;
+}
+
+.register {
     z-index: 6;
     padding-top: 5%;
     padding-left: 5%;
