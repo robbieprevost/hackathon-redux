@@ -1,0 +1,71 @@
+<!DOCTYPE html ng-app="myApp">
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" ng-app="myApp" class="no-js" xmlns="http://www.w3.org/1999/html"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Jonny's SuperCool App?</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="./css/app.css">
+    <link href='http://fonts.googleapis.com/css?family=Sigmar+One' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script src="/js/angular.js"></script>
+    <script src="/js/angular-route.js"></script>
+    <script src="/js/app.js"></script>
+</head>
+<body ng-controller="myController" ng-init="socket()">
+<div class="top navbar navbar-inverse">
+    <p class="titleText">Jonny's</br>SuperCoolApp?</p>
+</div>
+<div class="features-container">
+    <div class="features-heading" ng-show="view.main">
+        <p>Hi there!
+            Jonny here.
+            I need your help to decide which features I should add to my SuperCoolApp next.
+            Please take a look at the list I've put together and vote for the feature you'd like to see next.
+            Also, feel free to comment on why or why not you'd like that feature in the app.<br><br>
+            Click on a feature for more details.
+        </p>
+    </div>
+    <div class="features" ng-repeat="feature in data.features | orderBy : 'score' : reverse = true">
+        <div class="feature" ng-show="view.main || view.feature == feature.id" >
+            <div class="feature-wrapper" ng-click="data.select(feature.id)">
+                <h2>{{feature.title}}</h2>
+                <h1 class="icon"><i class="{{feature.icon}}"></i></h1>
+            </div>
+
+
+            <button id="{{feature.id}} + 'up'" class="btn btn-lg btn-success thumbs" ng-click="data.upvote(feature.id)"><i class="fa fa-thumbs-up"></i></button>
+            <button id="{{feature.id}} + 'down'" class="btn  btn-lg btn-danger thumbs" ng-click="data.downvote(feature.id)"><i class="fa fa-thumbs-down"></i></button>
+            </br>
+            <p class="label label-success count">{{feature.upvotes}}</p>
+            <p class="label label-danger count">{{feature.downvotes}}</p>
+        </div>
+
+        <div id="{{feature.id}}" class="feature-details" ng-show="view.feature == feature.id">
+            <p>{{feature.description}}</p>
+
+
+            <h3 class="comments-header">Comments:</h3>
+            <div class="comments" ng-repeat="comment in feature.comments">
+                <p class="comment">{{comment.name}}:&nbsp{{comment.comment}}</p>
+            </div>
+            <form>
+                <input type="text" placeholder="enter your name" required><br>
+                <input type="text" placeholder="enter your comment" required>
+                <button class="btn btn-lg btn-success">submit</button>
+            </form>
+        </div>
+    </div>
+    <button class="btn btn-lg btn-warning back" ng-show="!view.main" ng-click="data.back()">back</button>
+</div>
+</body>
+</html>

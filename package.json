@@ -1,0 +1,17 @@
+{
+  "name": "hackathon-redux",
+  "version": "0.0.1",
+  "description": "new project",
+  "main": "app.js",
+  "author": "Robbie Prevost",
+  "private": "true",
+  "dependencies": {
+    "express": "4.x",
+    "express-session": "1.7.6",
+    "socket.io": "1.0.x",
+    "mongoose": "3.8.x",
+    "ejs": "1.0.0",
+    "passport-twitter": "~1.0.2",
+    "passport-facebook": "~1.0.3"
+  }
+}
