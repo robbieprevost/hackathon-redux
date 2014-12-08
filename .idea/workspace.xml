@@ -2,11 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fe4dade0-55f6-40f3-a4f1-494420ebd270" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/actions/actions.js" afterPath="$PROJECT_DIR$/actions/actions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/css/app.css" afterPath="$PROJECT_DIR$/views/css/app.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/js/app.js" afterPath="$PROJECT_DIR$/views/js/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/index.html" afterPath="$PROJECT_DIR$/views/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="hackathon-redux.iws" />
@@ -319,7 +314,13 @@
       <option name="project" value="LOCAL" />
       <updated>1417877160686</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Added Register and Login functionality.">
+      <created>1417999650526</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1417999650526</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -364,7 +365,8 @@
     </option>
     <MESSAGE value="Added some login assets." />
     <MESSAGE value="Added some register assets." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added some register assets." />
+    <MESSAGE value="Added Register and Login functionality." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Register and Login functionality." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
