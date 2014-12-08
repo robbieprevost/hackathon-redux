@@ -61,8 +61,8 @@
                 <p class="comment">{{comment.name}}:&nbsp{{comment.comment}}</p>
             </div>
             <form ng-show="data.user">
-                <input type="text" placeholder="enter your comment" required>
-                <button class="btn btn-lg btn-success">submit</button>
+                <input type="text" ng-model="data.newComment" placeholder="enter your comment">
+                <button class="btn btn-lg btn-success" ng-click="data.addComment(feature.id)">submit</button>
             </form>
             <div class="login-link-container" ng-show="!data.user">
                 <button class="btn btn-lg btn-default" ng-click="data.goToLogin()">login</button>

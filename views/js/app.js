@@ -27,6 +27,7 @@ var myApp = angular.module('myApp', ['ngRoute']).factory('socket', function ($ro
 var myController = myApp.controller('myController', function($scope, $rootScope, socket){
 
     $scope.data = {
+        newComment: '',
         loggedIn : false,
         user : undefined,
         features: [],
@@ -91,6 +92,17 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
         },
         goToProfile : function(){
 
+        },
+        addComment: function(featureId){
+           if($scope.data.newComment != '') {
+               var dataToSend = {
+                   user: $scope.data.user.username,
+                   feature: featureId,
+                   comment: $scope.data.newComment
+               };
+               socket.emit('newComment', dataToSend);
+               $scope.data.newComment = '';
+           }
         }
     };
     $scope.view = {

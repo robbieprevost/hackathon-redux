@@ -203,6 +203,14 @@ io.on('connection', function(socket){
         };
         actions.set(Action, dataToSet);
     });
+    socket.on('newComment', function(data){
+        console.log('newComment');
+        var dataToSet = {
+            title: 'addComment',
+            data: data
+        };
+       actions.set(Action, dataToSet);
+    });
 });
 
 

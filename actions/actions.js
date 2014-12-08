@@ -79,6 +79,24 @@ exports.get = function(Action, Feature, User, io, actions){
                     }
                 })
             }
+            if(data[0].title == 'addComment'){
+                Feature.find({id:data[0].data.feature}, function(err, feature){
+
+                    feature[0].comments[feature[0].comments.length] = {
+                        name : data[0].data.user,
+                        comment : data[0].data.comment,
+                        replies : []
+                    };
+                    feature[0].markModified('comments');
+                    feature[0].save(function () {
+                        var dataToSet = {
+                            title: 'get features',
+                            data: 'get features'
+                        };
+                        actions.set(Action, dataToSet);
+                    });
+                })
+            }
             data[0].remove();
         }else{
 
