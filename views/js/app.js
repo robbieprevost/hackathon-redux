@@ -30,9 +30,10 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
         newComment: '',
         loggedIn : false,
         pleaseLogin : false,
-        user : undefined,
+        user : {},
         features: [],
         incorrect: false,
+        profilePic: File,
         reply: {
             featureIndex: null,
             commentIndex: null,
@@ -159,6 +160,31 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
                 $scope.data.reply.commentIndex = null;
                 $scope.data.reply.replyComment = '';
             }
+        },
+        handleProfilePic : function(){
+            if($scope.data.loggedIn == true) {
+                var profilePic = document.getElementById('profilePic');
+                var picData;
+
+                var file = profilePic.files[0];
+                var imageType = /image.*/;
+
+                if (file.type.match(imageType)) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        picData = reader.result;
+                        var dataToSend = {
+                            user: $scope.data.user.username,
+                            data: picData
+                        };
+                        socket.emit('profilePic', dataToSend);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    console.log('i dunno, man');
+                }
+            }
         }
     };
     $scope.view = {
@@ -187,8 +213,10 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
     });
     socket.on('loggedIn', function(data){
         $scope.data.user = data;
+        console.log(data);
         $scope.data.loggedIn = true;
         $scope.view.main = true;
+        $scope.view.feature = null;
         $scope.view.account.login = false;
     });
     socket.on('incorrect', function(data){

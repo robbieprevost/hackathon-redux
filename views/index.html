@@ -26,7 +26,7 @@
     <p class="titleText">Jonny's</br>SuperCoolApp?</p>
     <div class="userLink" ng-show="data.loggedIn" ng-click="goToProfile()">
         <span>{{data.user.username}}</span>
-        <img src="img/FB-f-Logo__blue_100.png" width="50" height="50" alt="profile pic">
+        <img ng-src="{{data.user.img}}" width="50" height="50" alt="profile pic">
     </div>
 </div>
 <div class="features-container">
@@ -46,6 +46,12 @@
         <button class="btn btn-lg btn-success" ng-click="data.goToLogin()">login</button>
         &nbsp;or&nbsp;
         <button class="btn btn-lg btn-success" ng-click="data.goToRegister()">register</button>
+    </div>
+    <div class="img-upload" ng-show="view.feature == 4 && data.loggedIn">
+        <form>
+            <input id="profilePic" class="btn btn-lrg btn-warning" type="file" required>
+            <button class="btn btn-lg btn-danger" ng-click="data.handleProfilePic()">upload</button>
+        </form>
     </div>
     <div class="features" ng-repeat="feature in data.features | orderBy : 'score' : reverse = true">
         <div class="feature" ng-show="view.main || view.feature == feature.id" >
@@ -78,11 +84,11 @@
                     <button class="btn btn-default" ng-click="data.cancelReply()">cancel</button>
                 </form>
             </div>
-            <form ng-show="data.user">
+            <form ng-show="data.loggedIn">
                 <input type="text" ng-model="data.newComment" placeholder="enter your comment">
                 <button class="btn btn-lg btn-success" ng-click="data.addComment(feature.id)">submit</button>
             </form>
-            <div class="login-link-container" ng-show="!data.user">
+            <div class="login-link-container" ng-show="!data.loggedIn">
                 <button class="btn btn-lg btn-success" ng-click="data.goToLogin()">login</button>
                 &nbsp;or&nbsp;
                 <button class="btn btn-lg btn-success" ng-click="data.goToRegister()">register</button>

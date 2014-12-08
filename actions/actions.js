@@ -7,7 +7,7 @@ exports.set = function(Action, dataToSet){
         });
 };
 
-exports.get = function(Action, Feature, User, io, actions){
+exports.get = function(Action, Feature, User, io, actions, credentials, imgur){
     Action.find({}, function(err,data){
         if(data[0]) {
             var action = data[0];
@@ -128,7 +128,8 @@ exports.get = function(Action, Feature, User, io, actions){
                     username: data[0].data.username,
                     email: data[0].data.email,
                     twitter: data[0].data.twitter,
-                    password: data[0].data.password
+                    password: data[0].data.password,
+                    img: data[0].data.img
                 }).save(function(){
                        console.log('saved user');
                        io.to(data[0].data.socket).emit('userCreated', 'userCreated');
@@ -163,7 +164,7 @@ exports.get = function(Action, Feature, User, io, actions){
                     });
                 })
             }
-            if(data[0].title = 'commentReply'){
+            if(data[0].title == 'commentReply'){
                 Feature.find({id:data[0].data.featureIndex}, function(err, feature){
                     if(feature[0]) {
                         feature[0].comments[data[0].data.commentIndex].replies.push({
@@ -180,6 +181,19 @@ exports.get = function(Action, Feature, User, io, actions){
                         })
                     }
                 });
+            }
+            if(data[0].title == 'profilePic'){
+                console.log('profilePic');
+                        User.find({username:data[0].data.user},function(err, user){
+                            //user[0].img = json.data.link;
+                            user[0].img = data[0].data.data;
+                            console.log(user[0]);
+                            user[0].markModified('img');
+                            user[0].save(function(){
+                                io.to(data[0].data.socket).emit('loggedIn', user[0])
+                            })
+
+                        });
             }
             data[0].remove();
         }else{

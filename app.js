@@ -4,8 +4,33 @@ var http = require('http').createServer(app);
 var mongoose = require('mongoose');
 var actions = require('./actions/actions');
 var io = require('socket.io').listen(http);
+var imgur = require('imgur');
+
 mongoose.connect('mongodb://localhost:27017', function(){
     console.log('mongoose connected');
+});
+
+var credentialsSchema = new mongoose.Schema({
+    im : String,
+    ims : String,
+    f : String,
+    fs : String,
+    t : String,
+    ts : String,
+    w : String,
+    ws : String
+});
+
+var Credential = mongoose.model('Credential', credentialsSchema);
+
+var credentials;
+Credential.find({}, function(err, credential){
+    if(credential[0]) {
+        credentials = credential[0];
+        console.log(credentials);
+    } else {
+
+    }
 });
 
 var userSchema = new mongoose.Schema({
@@ -15,7 +40,8 @@ var userSchema = new mongoose.Schema({
     password : String,
     comments: Array,
     upvotes: Array,
-    downvotes: Array
+    downvotes: Array,
+    img: String
 });
 
 var User = mongoose.model('User', userSchema);
@@ -152,7 +178,7 @@ var actionSchema = new mongoose.Schema({
 
 var Action = mongoose.model('Action', actionSchema);
 var actionsInterval = setInterval(function(){
-    actions.get(Action, Feature, User, io, actions)
+    actions.get(Action, Feature, User, io, actions, credentials, imgur)
 }, 100);
 
 app.use(express.static(__dirname + '/views'));
@@ -218,6 +244,18 @@ io.on('connection', function(socket){
            title: 'commentReply',
            data: data
        };
+        actions.set(Action, dataToSet);
+    });
+    socket.on('profilePic', function(data){
+        console.log(data);
+        var dataToSet = {
+            title: 'profilePic',
+            data: {
+                user: data.user,
+                data: data.data,
+                socket: socketId
+            }
+        };
         actions.set(Action, dataToSet);
     });
 });
