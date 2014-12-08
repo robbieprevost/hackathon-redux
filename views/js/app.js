@@ -27,58 +27,21 @@ var myApp = angular.module('myApp', ['ngRoute']).factory('socket', function ($ro
 var myController = myApp.controller('myController', function($scope, $rootScope, socket){
 
     $scope.data = {
-        user : null,
-        features: [{
-            icon: '',
-            title: '',
-            id: 0,
-            description: '',
-            upvotes: 0,
-            downvotes: 0,
-            comments: [],
-            score: 0
-        },{
-            icon: '',
-            title: '',
-            id: 1,
-            description: '',
-            upvotes: 0,
-            downvotes: 0,
-            comments: [],
-            score: 0
-        },{
-            icon: '',
-            title: '',
-            id: 2,
-            description: '',
-            upvotes: 0,
-            downvotes: 0,
-            comments: [],
-            score: 0
-        },{
-            icon: '',
-            title: '',
-            id: 3,
-            description: '',
-            upvotes: 0,
-            downvotes: 0,
-            comments: [],
-            score: 0
-        },{
-            icon: '',
-            title: '',
-            id: 4,
-            description: '',
-            upvotes: 0,
-            downvotes: 0,
-            comments: [],
-            score: 0
-        }],
-        upvote : function(id){
+        loggedIn : false,
+        user : undefined,
+        features: [],
+        incorrect: false,
+        upvote : function(id, $event){
+            $event.stopPropagation();
+            $scope.view.main = true;
+            $scope.view.feature = null;
             var whichFeature = parseInt(id);
             socket.emit('upvote', whichFeature);
         },
-        downvote : function(id){
+        downvote : function(id, $event){
+            $event.stopPropagation();
+            $scope.view.main = true;
+            $scope.view.feature = null;
             var whichFeature = parseInt(id);
             socket.emit('downvote', whichFeature);
         },
@@ -95,8 +58,6 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
             $scope.view.feature = null;
             $scope.view.account.login = false;
             $scope.view.account.register = false;
-            $scope.view.register.choose = false;
-            $scope.view.register.email = false;
         },
         goToLogin : function(){
             $scope.view.main = false;
@@ -121,16 +82,25 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
             $scope.view.account.register = true;
             $scope.view.register.choose = false;
             $scope.view.register.email = true;
+        },
+        createUser: function(){
+            socket.emit('createUser', $scope.data.user);
+        },
+        loginUser : function(){
+            socket.emit('loginUser', $scope.data.user);
+        },
+        goToProfile : function(){
+
         }
     };
     $scope.view = {
-        main: false,
+        main: true,
         account:{
             login: false,
-            register: true
+            register: false
         },
         register: {
-            choose: true,
+            choose: false,
             email: false
         }
     };
@@ -140,19 +110,20 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
     });
     socket.on('features', function(data){
         console.log(data);
-        for(var i = 0;i<data.length;i++){
-            for(var j = 0; j< $scope.data.features.length;j++) {
-                if(data[i].id == $scope.data.features[j].id) {
-                    $scope.data.features[j].icon = data[i].icon;
-                    $scope.data.features[j].id = data[i].id;
-                    $scope.data.features[j].description = data[i].description;
-                    $scope.data.features[j].upvotes = data[i].upvotes;
-                    $scope.data.features[j].downvotes = data[i].downvotes;
-                    $scope.data.features[j].comments = data[i].comments;
-                    $scope.data.features[j].score = data[i].score;
-                    $scope.data.features[j].title = data[i].title;
-                }
-            }
-        }
+        $scope.data.features = data;
+    });
+    socket.on('userCreated', function(data){
+       $scope.view.main = true;
+        $scope.view.account.register = false;
+        $scope.data.loggedIn = true;
+    });
+    socket.on('loggedIn', function(data){
+        $scope.data.user = data;
+        $scope.data.loggedIn = true;
+        $scope.view.main = true;
+        $scope.view.account.login = false;
+    });
+    socket.on('incorrect', function(data){
+       $scope.data.incorrect = true;
     });
 });

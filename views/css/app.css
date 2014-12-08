@@ -3,6 +3,12 @@ body {
     font-family: 'Sigmar One', cursive;
 }
 
+.userLink {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+}
+
 .top {
     width: 100%;
     height: 120px;

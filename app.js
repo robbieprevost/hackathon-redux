@@ -8,6 +8,16 @@ mongoose.connect('mongodb://localhost:27017', function(){
     console.log('mongoose connected');
 });
 
+var userSchema = new mongoose.Schema({
+    username: String,
+    email: String,
+    twitter : String,
+    password : String,
+    comments: Array
+});
+
+var User = mongoose.model('User', userSchema);
+
 var featureSchema = new mongoose.Schema({
     icon: String,
     title: String,
@@ -140,7 +150,7 @@ var actionSchema = new mongoose.Schema({
 
 var Action = mongoose.model('Action', actionSchema);
 var actionsInterval = setInterval(function(){
-    actions.get(Action, Feature, io, actions)
+    actions.get(Action, Feature, User, io, actions)
 }, 100);
 
 app.use(express.static(__dirname + '/views'));
@@ -154,7 +164,7 @@ io.on('connection', function(socket){
     var socketId = socket.id;
     io.to(socketId).emit('hello', 'hello');
     socket.on('get features', function(){
-        dataToSet = {
+        var dataToSet = {
             title: 'get features',
             data: 'get features'
         };
@@ -162,7 +172,7 @@ io.on('connection', function(socket){
     });
     socket.on('upvote', function(data){
         console.log('upvote');
-        dataToSet = {
+        var dataToSet = {
             title: 'upvote',
             data: data
         };
@@ -170,8 +180,25 @@ io.on('connection', function(socket){
     });
     socket.on('downvote', function(data){
         console.log('downvote');
-        dataToSet = {
+        var dataToSet = {
             title: 'downvote',
+            data: data
+        };
+        actions.set(Action, dataToSet);
+    });
+    socket.on('createUser', function(data){
+        data.socket = socketId;
+        var dataToSet = {
+            title: 'createUser',
+            data: data
+        };
+        actions.set(Action, dataToSet);
+    });
+    socket.on('loginUser', function(data){
+        console.log('loginUser');
+        data.socket = socketId;
+        var dataToSet = {
+            title: 'loginUser',
             data: data
         };
         actions.set(Action, dataToSet);

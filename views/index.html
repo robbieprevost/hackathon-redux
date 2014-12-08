@@ -24,6 +24,10 @@
 <body ng-controller="myController" ng-init="socket()">
 <div class="top navbar navbar-inverse">
     <p class="titleText">Jonny's</br>SuperCoolApp?</p>
+    <div class="userLink" ng-show="data.loggedIn" ng-click="goToProfile()">
+        <span>{{data.user.username}}</span>
+        <img src="img/FB-f-Logo__blue_100.png" width="50" height="50" alt="profile pic">
+    </div>
 </div>
 <div class="features-container">
     <div class="features-heading" ng-show="view.main">
@@ -43,8 +47,8 @@
             </div>
 
 
-            <button id="{{feature.id}} + 'up'" class="btn btn-lg btn-success thumbs" ng-click="data.upvote(feature.id)"><i class="fa fa-thumbs-up"></i></button>
-            <button id="{{feature.id}} + 'down'" class="btn  btn-lg btn-danger thumbs" ng-click="data.downvote(feature.id)"><i class="fa fa-thumbs-down"></i></button>
+            <button id="{{feature.id}} + 'up'" class="btn btn-lg btn-success thumbs" ng-click="data.upvote(feature.id, $event)"><i class="fa fa-thumbs-up"></i></button>
+            <button id="{{feature.id}} + 'down'" class="btn  btn-lg btn-danger thumbs" ng-click="data.downvote(feature.id, $event)"><i class="fa fa-thumbs-down"></i></button>
             </br>
             <p class="label label-success count">{{feature.upvotes}}</p>
             <p class="label label-danger count">{{feature.downvotes}}</p>
@@ -72,12 +76,13 @@
         <div class="login" ng-show="view.account.login">
             <h1>Login:</h1>
             <form>
-                <input ng-bind="data.user.username" type="text" placeholder="username">
+                <input ng-model="data.user.username" type="text" placeholder="username" required>
                 <br>
-                <input ng-bind="data.user.password" type="password" placeholder="password">
+                <input ng-model="data.user.password" type="password" placeholder="password" required>
                 <br>
+                <p ng-show="data.incorrect">incorrect username or password</p>
                 <br>
-                <button class="btn btn-lg btn-primary">login</button>
+                <button class="btn btn-lg btn-primary" ng-click="data.loginUser()">login</button>
             </form>
             <br>
             Or login with:
@@ -102,15 +107,16 @@
                 <form>
                     <h1>Register an account:</h1>
                     <br><br>
-                    <input type="text" ng-bind="data.user.username" placeholder="username" required>
+                    <input type="text" ng-model="data.user.username" placeholder="username" required>
+                    <p ng-show="view.register.usernameExists">Try a different username.</p>
                     <br><br>
-                    <input type="email" ng-bind="data.user.email" placeholder="email" required>
+                    <input type="email" ng-model="data.user.email" placeholder="email" required>
                     <br><br>
-                    <input type="text" ng-bind="data.user.twitter" placeholder="twitter username">(optional)
+                    <input type="text" ng-model="data.user.twitter" placeholder="twitter username">(optional)
                     <br><br>
-                    <input type="password" ng-bind="data.user.password" placeholder="password" required>
+                    <input type="password" ng-model="data.user.password" placeholder="password" required>
                     <br><br>
-                    <button class="btn btn-lg btn-primary">submit</button>
+                    <button class="btn btn-lg btn-primary" ng-click="data.createUser()">submit</button>
                 </form>
             </div>
         </div>
