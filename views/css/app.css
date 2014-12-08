@@ -114,3 +114,9 @@ font-size: 1.5em;
 .comment-reply {
     color: #ddffdd;
 }
+
+.please-login {
+    width:100%;
+    margin: 10% auto;
+    background-color: #eeeeee;
+}

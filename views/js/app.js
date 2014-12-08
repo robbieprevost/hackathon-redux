@@ -47,7 +47,13 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
                 };
                 socket.emit('upvote', dataToSend);
             }else {
-                $scope.pleaseLogin = true;
+                $scope.data.pleaseLogin = true;
+                $scope.view.main = false;
+                $scope.view.feature = null;
+                $scope.view.account.login = false;
+                $scope.view.account.register = false;
+                $scope.view.register.choose = false;
+                $scope.view.register.email = false;
             }
         },
         downvote : function(id, $event){
@@ -59,7 +65,13 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
                 };
                 socket.emit('downvote', dataToSend);
             }else {
-                $scope.pleaseLogin = true;
+                $scope.data.pleaseLogin = true;
+                $scope.view.main = false;
+                $scope.view.feature = null;
+                $scope.view.account.login = false;
+                $scope.view.account.register = false;
+                $scope.view.register.choose = false;
+                $scope.view.register.email = false;
             }
         },
         score: function(upvotes, downvotes){
@@ -69,12 +81,14 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
         select : function(id){
             $scope.view.main = false;
             $scope.view.feature = id;
+            $scope.data.pleaseLogin = false;
         },
         back : function(){
             $scope.view.main = true;
             $scope.view.feature = null;
             $scope.view.account.login = false;
             $scope.view.account.register = false;
+            $scope.data.pleaseLogin = false;
         },
         goToLogin : function(){
             $scope.view.main = false;
@@ -83,6 +97,7 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
             $scope.view.account.register = false;
             $scope.view.register.choose = false;
             $scope.view.register.email = false;
+            $scope.data.pleaseLogin = false;
         },
         goToRegister : function(){
             $scope.view.main = false;
@@ -91,6 +106,7 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
             $scope.view.account.register = true;
             $scope.view.register.choose = true;
             $scope.view.register.email = false;
+            $scope.data.pleaseLogin = false;
         },
         goToEmailRegister : function(){
             $scope.view.main = false;
@@ -99,6 +115,7 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
             $scope.view.account.register = true;
             $scope.view.register.choose = false;
             $scope.view.register.email = true;
+            $scope.data.pleaseLogin = false;
         },
         createUser: function(){
             socket.emit('createUser', $scope.data.user);

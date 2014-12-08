@@ -39,6 +39,14 @@
             Click on a feature for more details.
         </p>
     </div>
+    <div class="please-login" ng-show="data.pleaseLogin">
+        <span>Please login/register to vote or comment:</span>
+        <br>
+        <br>
+        <button class="btn btn-lg btn-success" ng-click="data.goToLogin()">login</button>
+        &nbsp;or&nbsp;
+        <button class="btn btn-lg btn-success" ng-click="data.goToRegister()">register</button>
+    </div>
     <div class="features" ng-repeat="feature in data.features | orderBy : 'score' : reverse = true">
         <div class="feature" ng-show="view.main || view.feature == feature.id" >
             <div class="feature-wrapper" ng-click="data.select(feature.id)">
@@ -75,9 +83,9 @@
                 <button class="btn btn-lg btn-success" ng-click="data.addComment(feature.id)">submit</button>
             </form>
             <div class="login-link-container" ng-show="!data.user">
-                <button class="btn btn-lg btn-default" ng-click="data.goToLogin()">login</button>
+                <button class="btn btn-lg btn-success" ng-click="data.goToLogin()">login</button>
                 &nbsp;or&nbsp;
-                <button class="btn btn-lg btn-default" ng-click="data.goToRegister()">register</button>
+                <button class="btn btn-lg btn-success" ng-click="data.goToRegister()">register</button>
                 &nbsp;to comment.
             </div>
         </div>
