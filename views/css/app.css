@@ -64,7 +64,14 @@ font-size: 1.5em;
     color: #ccccc0;
 }
 
+.comments {
+    margin: 0 5px;
+    clear: both;
+}
+
 .comments-header{
+    margin: 0 5px;
+    clear: both;
     color: #eeeeee;
 }
 
@@ -98,4 +105,12 @@ font-size: 1.5em;
     z-index: 6;
     padding-top: 5%;
     padding-left: 5%;
+}
+.comment-name {
+    color: #eeeeff;
+    font-size: 1.25em;
+}
+
+.comment-reply {
+    color: #ddffdd;
 }

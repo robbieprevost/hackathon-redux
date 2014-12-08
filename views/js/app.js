@@ -32,6 +32,11 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
         user : undefined,
         features: [],
         incorrect: false,
+        reply: {
+            featureIndex: null,
+            commentIndex: null,
+            replyComment: ''
+        },
         upvote : function(id, $event){
             $event.stopPropagation();
             $scope.view.main = true;
@@ -103,6 +108,29 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
                socket.emit('newComment', dataToSend);
                $scope.data.newComment = '';
            }
+        },
+        showReplyField: function(parentIndex, index){
+            $scope.data.reply.featureIndex = parentIndex;
+            $scope.data.reply.commentIndex = index;
+            console.log($scope.data.reply.featureIndex, $scope.data.reply.commentIndex);
+        },
+        cancelReply: function(){
+            $scope.data.reply.featureIndex = null;
+            $scope.data.reply.commentIndex = null;
+        },
+        sendReply: function(){
+            if($scope.data.reply.replyComment != '') {
+                var dataToSend = {
+                    featureIndex: $scope.data.reply.featureIndex,
+                    commentIndex: $scope.data.reply.commentIndex,
+                    reply: $scope.data.reply.replyComment,
+                    user: $scope.data.user.username
+                };
+                socket.emit('commentReply', dataToSend);
+                $scope.data.reply.featureIndex = null;
+                $scope.data.reply.commentIndex = null;
+                $scope.data.reply.replyComment = '';
+            }
         }
     };
     $scope.view = {

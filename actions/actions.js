@@ -97,6 +97,24 @@ exports.get = function(Action, Feature, User, io, actions){
                     });
                 })
             }
+            if(data[0].title = 'commentReply'){
+                Feature.find({id:data[0].data.featureIndex}, function(err, feature){
+                    if(feature[0]) {
+                        feature[0].comments[data[0].data.commentIndex].replies.push({
+                            name: data[0].data.user,
+                            comment: data[0].data.reply
+                        });
+                        feature[0].markModified('comments');
+                        feature[0].save(function () {
+                            var dataToSet = {
+                                title: 'get features',
+                                data: 'get features'
+                            };
+                            actions.set(Action, dataToSet);
+                        })
+                    }
+                });
+            }
             data[0].remove();
         }else{
 

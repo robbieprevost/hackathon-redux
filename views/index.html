@@ -58,7 +58,17 @@
             <p class="features-description">{{feature.description}}</p>
             <h3 class="comments-header">Comments:</h3>
             <div class="comments" ng-repeat="comment in feature.comments">
-                <p class="comment">{{comment.name}}:&nbsp{{comment.comment}}</p>
+                <span class="comment"><span class="comment-name">{{comment.name}}&nbsp;</span>:&nbsp;&nbsp;{{comment.comment}}</span>
+                <button class="btn btn-xs btn-default" ng-show="data.loggedIn && data.reply.commentIndex == null"
+                        ng-click="data.showReplyField($parent.feature.id, $index)">reply</button><br><br>
+                <div class="replies" ng-repeat="reply in comment.replies">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment-reply"><span class="comment-name">{{reply.name}}&nbsp;</span>:&nbsp;&nbsp;{{reply.comment}}</span><br><br>
+                </div>
+                <form ng-show="data.reply.featureIndex == $parent.feature.id && data.reply.commentIndex == $index">
+                    <input type="text" ng-model="data.reply.replyComment" placeholder="Enter a reply">
+                    <button class="btn btn-default" ng-click="data.sendReply()">reply</button>
+                    <button class="btn btn-default" ng-click="data.cancelReply()">cancel</button>
+                </form>
             </div>
             <form ng-show="data.user">
                 <input type="text" ng-model="data.newComment" placeholder="enter your comment">

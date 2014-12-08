@@ -211,6 +211,13 @@ io.on('connection', function(socket){
         };
        actions.set(Action, dataToSet);
     });
+    socket.on('commentReply', function(data){
+       var dataToSet = {
+           title: 'commentReply',
+           data: data
+       };
+        actions.set(Action, dataToSet);
+    });
 });
 
 
