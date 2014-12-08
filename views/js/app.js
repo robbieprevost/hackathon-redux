@@ -29,6 +29,7 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
     $scope.data = {
         newComment: '',
         loggedIn : false,
+        pleaseLogin : false,
         user : undefined,
         features: [],
         incorrect: false,
@@ -38,18 +39,28 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
             replyComment: ''
         },
         upvote : function(id, $event){
-            $event.stopPropagation();
-            $scope.view.main = true;
-            $scope.view.feature = null;
-            var whichFeature = parseInt(id);
-            socket.emit('upvote', whichFeature);
+            if($scope.data.loggedIn) {
+                var whichFeature = parseInt(id);
+                var dataToSend = {
+                    user: $scope.data.user.username,
+                    feature: whichFeature
+                };
+                socket.emit('upvote', dataToSend);
+            }else {
+                $scope.pleaseLogin = true;
+            }
         },
         downvote : function(id, $event){
-            $event.stopPropagation();
-            $scope.view.main = true;
-            $scope.view.feature = null;
-            var whichFeature = parseInt(id);
-            socket.emit('downvote', whichFeature);
+            if($scope.data.loggedIn) {
+                var whichFeature = parseInt(id);
+                var dataToSend = {
+                    user: $scope.data.user.username,
+                    feature: whichFeature
+                };
+                socket.emit('downvote', dataToSend);
+            }else {
+                $scope.pleaseLogin = true;
+            }
         },
         score: function(upvotes, downvotes){
             var score = upvotes/downvotes;

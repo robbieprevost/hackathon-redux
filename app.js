@@ -13,7 +13,9 @@ var userSchema = new mongoose.Schema({
     email: String,
     twitter : String,
     password : String,
-    comments: Array
+    comments: Array,
+    upvotes: Array,
+    downvotes: Array
 });
 
 var User = mongoose.model('User', userSchema);

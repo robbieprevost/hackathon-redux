@@ -26,36 +26,102 @@ exports.get = function(Action, Feature, User, io, actions){
                 io.emit('features', data[0].data.features);
             }
             if(data[0].title == 'upvote'){
-                Feature.find({id:data[0].data}, function(err, features){
-                    if(features[0]) {
-                        console.log('upvoted');
-                        features[0].upvotes = features[0].upvotes + 1;
-                        features[0].score = features[0].upvotes / features[0].downvotes;
-                        features[0].save(function () {
-                            var dataToSet = {
-                                title: 'get features',
-                                data: 'get features'
-                            };
-                            actions.set(Action, dataToSet);
-                        });
+                User.find({username : data[0].data.user}, function(err, user){
+                    var upvoted = false;
+                    var downvoted = false;
+                    if(user[0]){
+                        if(user[0].upvotes) {
+                            for (var i = 0; i < user[0].upvotes.length; i++) {
+                                if (user[0].upvotes[i] == data[0].data.feature) {
+                                    upvoted = true;
+                                }
+                            }
+                        }
+                        if(user[0].downvotes) {
+                            for (var i = 0; i < user[0].downvotes.length; i++) {
+                                if (user[0].downvotes[i] == data[0].data.feature) {
+                                    user[0].downvotes.splice(i,1);
+                                    downvoted = true;
+                                }
+                            }
+                        }
+                        if(!upvoted){
+                            user[0].upvotes.push(data[0].data.feature);
+                            user[0].markModified('upvotes');
+                            user[0].save(function(){
+                                Feature.find({id:data[0].data.feature}, function(err, features){
+                                    if(features[0]) {
+                                        console.log('upvoted');
+                                        features[0].upvotes = features[0].upvotes + 1;
+                                        if(downvoted){
+                                            features[0].downvotes = features[0].downvotes - 1;
+                                        }
+                                        features[0].score = features[0].upvotes / features[0].downvotes;
+                                        features[0].save(function () {
+                                            var dataToSet = {
+                                                title: 'get features',
+                                                data: 'get features'
+                                            };
+                                            actions.set(Action, dataToSet);
+                                        });
+                                    }
+                                });
+                            });
+                        } else{
+
+                        }
                     }
-                })
+                });
+
             }
             if(data[0].title == 'downvote'){
-                Feature.find({id:data[0].data}, function(err, features){
-                    if(features[0]) {
-                        console.log('downvoted');
-                        features[0].downvotes = features[0].downvotes + 1;
-                        features[0].score = features[0].upvotes / features[0].downvotes;
-                        features[0].save(function () {
-                            var dataToSet = {
-                                title: 'get features',
-                                data: 'get features'
-                            };
-                            actions.set(Action, dataToSet);
-                        });
+                User.find({username : data[0].data.user}, function(err, user){
+                    var upvoted = false;
+                    var downvoted = false;
+                    if(user[0]){
+                        if(user[0].downvotes) {
+                            for (var i = 0; i < user[0].downvotes.length; i++) {
+                                if (user[0].downvotes[i] == data[0].data.feature) {
+                                    downvoted = true;
+                                }
+                            }
+                        }
+                        if(user[0].upvotes) {
+                            for (var i = 0; i < user[0].upvotes.length; i++) {
+                                if (user[0].upvotes[i] == data[0].data.feature) {
+                                    user[0].upvotes.splice(i,1);
+                                    upvoted = true;
+                                }
+                            }
+                        }
+                        if(!downvoted){
+                            user[0].downvotes.push(data[0].data.feature);
+                            user[0].markModified('downvotes');
+                            user[0].save(function(){
+                                Feature.find({id:data[0].data.feature}, function(err, features){
+                                    if(features[0]) {
+                                        console.log('downvoted');
+                                        features[0].downvotes = features[0].downvotes + 1;
+                                        if(upvoted){
+                                            features[0].upvotes = features[0].upvotes - 1;
+                                        }
+                                        features[0].score = features[0].upvotes / features[0].downvotes;
+                                        features[0].save(function () {
+                                            var dataToSet = {
+                                                title: 'get features',
+                                                data: 'get features'
+                                            };
+                                            actions.set(Action, dataToSet);
+                                        });
+                                    }
+                                });
+                            });
+                        } else{
+
+                        }
                     }
-                })
+                });
+
             }
             if(data[0].title == 'createUser'){
                 var user = new User({
