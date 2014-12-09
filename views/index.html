@@ -19,6 +19,8 @@
     <script src="http://localhost:3000/socket.io/socket.io.js"></script>
     <script src="/js/angular.js"></script>
     <script src="/js/angular-route.js"></script>
+    <script src="/js/angular-facebook.js"></script>
+    <script src="js/oauth.js"></script>
     <script src="/js/app.js"></script>
 </head>
 <body ng-controller="myController" ng-init="socket()">
@@ -53,6 +55,20 @@
             <button class="btn btn-lg btn-danger" ng-click="data.handleProfilePic()">upload</button>
         </form>
     </div>
+    <div class="twitter-tweets-container" ng-show="view.feature == 1">
+        <div class="get-tweets">
+            <h3>Get tweets:</h3><br>
+            <button class="btn btn-lg btn-primary" ng-click="data.twitterClick()">
+                <img src="img/Twitter_logo_white.png" alt="twitter logo" width="80" height="80">
+            </button>
+            <div class="tweets-container" ng-show="data.tweets">
+                <div class="tweets" ng-repeat="tweet in data.tweets">
+                    <a ng-href="{{tweet.entities.urls[0].url}}" target="_blank"><img ng-src="{{tweet.user.profile_image_url}}" class="img-circle" alt="'{{tweet.user.name}}' + 'profile pic'">
+                    <small>{{tweet.user.name}}</small><br>{{tweet.text}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="features" ng-repeat="feature in data.features | orderBy : 'score' : reverse = true">
         <div class="feature" ng-show="view.main || view.feature == feature.id" >
             <div class="feature-wrapper" ng-click="data.select(feature.id)">
@@ -78,13 +94,13 @@
                 <div class="replies" ng-repeat="reply in comment.replies">
                     &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment-reply"><span class="comment-name">{{reply.name}}&nbsp;</span>:&nbsp;&nbsp;{{reply.comment}}</span><br><br>
                 </div>
-                <form ng-show="data.reply.featureIndex == $parent.feature.id && data.reply.commentIndex == $index">
+                <form class="new-comment" ng-show="data.reply.featureIndex == $parent.feature.id && data.reply.commentIndex == $index">
                     <input type="text" ng-model="data.reply.replyComment" placeholder="Enter a reply">
                     <button class="btn btn-default" ng-click="data.sendReply()">reply</button>
                     <button class="btn btn-default" ng-click="data.cancelReply()">cancel</button>
                 </form>
             </div>
-            <form ng-show="data.loggedIn">
+            <form class="new-comment" ng-show="data.loggedIn">
                 <input type="text" ng-model="data.newComment" placeholder="enter your comment">
                 <button class="btn btn-lg btn-success" ng-click="data.addComment(feature.id)">submit</button>
             </form>
@@ -111,8 +127,8 @@
             <br>
             Or login with:
             <br>
-            <button>
-                <img src="img/FB-f-Logo__blue_100.png" alt="facebook logo">
+            <button ng-click="data.facebooking($event)">
+                <img ng-src="img/FB-f-Logo__blue_100.png" alt="facebook logo">
             </button>
         </div>
         <div class="register" ng-show="view.register.choose || view.register.email">
@@ -125,7 +141,9 @@
                 or
                 <br>
                 <br>
-                <button><img src="img/FB-f-Logo__blue_100.png" alt="facebook logo"></button>
+                <button ng-click="data.facebooking($event)">
+                    <img ng-src="img/FB-f-Logo__blue_100.png" alt="facebook logo" >
+                </button>
             </div>
             <div class="email-register" ng-show="view.register.email">
                 <form>

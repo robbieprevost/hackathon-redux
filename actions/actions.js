@@ -7,7 +7,7 @@ exports.set = function(Action, dataToSet){
         });
 };
 
-exports.get = function(Action, Feature, User, io, actions, credentials, imgur){
+exports.get = function(Action, Feature, User, io, actions, credentials){
     Action.find({}, function(err,data){
         if(data[0]) {
             var action = data[0];

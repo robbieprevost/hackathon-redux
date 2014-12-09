@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp', ['ngRoute']).factory('socket', function ($rootScope) {
+var myApp = angular.module('myApp', ['ngRoute', 'facebook']).factory('socket', function ($rootScope) {
     var socket = io.connect('http://localhost:3000');
     return {
         on: function (eventName, callback) {
@@ -20,13 +20,18 @@ var myApp = angular.module('myApp', ['ngRoute']).factory('socket', function ($ro
             })
         }
     };
+}).config(function(FacebookProvider) {
+    // Set your appId through the setAppId method or
+    // use the shortcut in the initialize method directly.
+    FacebookProvider.init('1519377984984096');
 });
 
 
 
-var myController = myApp.controller('myController', function($scope, $rootScope, socket){
-
+var myController = myApp.controller('myController', function($scope, $rootScope, socket, Facebook){
     $scope.data = {
+        twitterConnected: false,
+        tweets: null,
         newComment: '',
         loggedIn : false,
         pleaseLogin : false,
@@ -38,6 +43,24 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
             featureIndex: null,
             commentIndex: null,
             replyComment: ''
+        },
+        twitterClick : function(){
+            OAuth.initialize('MZ5Jpk4ozVnQpApySuGgvTEebP0', {cache:true});
+            var authorizationResult = OAuth.create('twitter');
+            OAuth.popup('twitter', {cache:true}, function(error, result) {
+                if (!error) {
+                    console.log(result);
+                    authorizationResult = result;
+                    var promise = authorizationResult.get('/1.1/statuses/home_timeline.json').done(function(data) {
+                        console.log(data);
+                        $scope.$apply(function(){
+                            $scope.data.tweets = data;
+                        });
+                    });
+                } else {
+                    console.log(error);
+                }
+            });
         },
         upvote : function(id, $event){
             if($scope.data.loggedIn) {
@@ -179,14 +202,34 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
                             data: picData
                         };
                         socket.emit('profilePic', dataToSend);
+                        profilePic.value = null;
                     };
                     reader.readAsDataURL(file);
                 } else {
                     console.log('i dunno, man');
                 }
             }
+        },
+        facebooking : function() {
+            console.log('zoooooom');
+            // From now on you can use the Facebook service just as Facebook api says
+            Facebook.login(function(responseZero) {
+                // Do something with response.
+                console.log(responseZero);
+                getInfo(responseZero);
+            });
+            function getInfo(responseZero){
+                Facebook.api('/me', function(responseOne) {
+                    $scope.data.user.username = responseOne.first_name + ' ' + responseOne.last_name;
+                    Facebook.api('/me/picture', function(responseTwo) {
+                        $scope.data.user.img = responseTwo.data.url;
+                        socket.emit('createUser', $scope.data.user);
+                        $scope.view.account.login = false;
+                    });
+                });
+            }
         }
-    };
+    }
     $scope.view = {
         main: true,
         account:{

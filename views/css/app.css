@@ -127,11 +127,34 @@ font-size: 1.5em;
     left: 38%;
 }
 
+.twitter-tweets-container {
+    position: absolute;
+    color: #eeeeee;
+    top: 31.5%;
+    left: 38%;
+}
+.tweets-container {
+    width: 80%;
+    height: 400px;
+    background-color: #eeeeee;
+    overflow: auto;
+}
+
+.new-comment {
+    max-width: 40%;
+}
 
 @media screen and (max-width: 700px) {
     .img-upload {
         position: absolute;
         top: 50%;
         left: 58%;
+    }
+    .twitter-tweets-container {
+        top: 38%;
+        left: 60%;
+    }
+    .new-comment{
+        max-width: 60%;
     }
 }

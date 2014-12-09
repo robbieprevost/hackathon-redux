@@ -4,7 +4,7 @@ var http = require('http').createServer(app);
 var mongoose = require('mongoose');
 var actions = require('./actions/actions');
 var io = require('socket.io').listen(http);
-var imgur = require('imgur');
+
 
 mongoose.connect('mongodb://localhost:27017', function(){
     console.log('mongoose connected');
@@ -178,8 +178,9 @@ var actionSchema = new mongoose.Schema({
 
 var Action = mongoose.model('Action', actionSchema);
 var actionsInterval = setInterval(function(){
-    actions.get(Action, Feature, User, io, actions, credentials, imgur)
+    actions.get(Action, Feature, User, io, actions, credentials)
 }, 100);
+
 
 app.use(express.static(__dirname + '/views'));
 app.get('/', function(req, res){
@@ -258,6 +259,7 @@ io.on('connection', function(socket){
         };
         actions.set(Action, dataToSet);
     });
+
 });
 
 
