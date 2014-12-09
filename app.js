@@ -59,6 +59,16 @@ var featureSchema = new mongoose.Schema({
 
 var Feature = mongoose.model('Feature', featureSchema);
 
+var actionSchema = new mongoose.Schema({
+    title: String,
+    data: {}
+});
+
+var Action = mongoose.model('Action', actionSchema);
+var actionsInterval = setInterval(function(){
+    actions.get(Action, Feature, User, io, actions, credentials)
+}, 100);
+
 function saveFeatures(Feature){
     var features = [
         {
@@ -169,17 +179,47 @@ function saveFeatures(Feature){
 }
 
 //saveFeatures(Feature);
+var randomFeatureVotesInterval;
+var randomInterval;
+function randomFeatureVotes(Feature){
+    for(var i = 0;i<5;i++){
+        var upDownBoth = Math.random();
+        var votes = {
+            up: 0,
+            down: 0
+        };
+        if(upDownBoth <= .33){
+            votes.down = Math.floor(Math.random * 100);
+        }else if(upDownBoth > .33 && upDownBoth < .66){
+            votes.down = Math.floor(Math.random * 100);
+            votes.up = Math.floor(Math.random * 100);
+        }else if(upDownBoth >= .66){
+            votes.up = Math.floor(Math.random * 100);
+        }
+        var dataToSet = {
+            title: 'randomVote',
+            data: {
+                id: i,
+                votes: votes
+            }
+        };
+        actions.set(Action, dataToSet);
+    }
+        if(randomFeatureVotesInterval) {
+            clearInterval(randomFeatureVotesInterval);
+            randomFeatureVotesInterval = null;
+        }
+        randomInterval = Math.floor(Math.random() * 1000000);
+        randomFeatureVotesInterval = setInterval(function(){
+            randomFeatureVotes();
+        }, randomInterval);
+}
+randomFeatureVotes(Feature);
 
-var actionSchema = new mongoose.Schema({
-    title: String,
-    data: {}
-});
 
 
-var Action = mongoose.model('Action', actionSchema);
-var actionsInterval = setInterval(function(){
-    actions.get(Action, Feature, User, io, actions, credentials)
-}, 100);
+
+
 
 
 app.use(express.static(__dirname + '/views'));

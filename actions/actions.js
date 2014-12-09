@@ -212,6 +212,29 @@ exports.get = function(Action, Feature, User, io, actions, credentials){
                         console.log("Got error: " + e.message);
                     });
             }
+            if(data[0].title == 'randomVote'){
+                Feature.find({id:data[0].data.id}, function(err, feature){
+                    if(data[0].data.votes.up){
+                        feature[0].upvotes = feature[0].upvotes + data[0].data.score.up;
+                        feature[0].markModified('upvotes');
+                    }
+                    if(data[0].data.votes.down){
+                        feature[0].downvotes = feature[0].downvotes + data[0].data.score.down;
+                        feature[0].markModified('downvotes');
+                    }
+                    feature[0].score = feature[0].upvotes / feature[0].downvotes;
+                    feature[0].markModified('score');
+                    feature[0].save(function(){
+                        if(data[0].data.id == 4) {
+                            var dataToSet = {
+                                title: 'get features',
+                                data: 'get features'
+                            };
+                            actions.set(Action, dataToSet);
+                        }
+                    });
+                })
+            }
             data[0].remove();
         }else{
 
