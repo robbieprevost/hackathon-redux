@@ -139,7 +139,14 @@ font-size: 1.5em;
     background-color: #eeeeee;
     overflow: auto;
 }
-
+.get-weather-container {
+    position: absolute;
+    color: #cccccc;
+    top: 38%;
+    left: 38%;
+    font-size: 2em;
+    text-align: center;
+}
 .new-comment {
     max-width: 40%;
 }
@@ -156,5 +163,13 @@ font-size: 1.5em;
     }
     .new-comment{
         max-width: 60%;
+    }
+    .get-weather-container {
+        position: absolute;
+        color: #cccccc;
+        top: 38%;
+        left: 60%;
+        font-size: 2em;
+        text-align: center;
     }
 }

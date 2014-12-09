@@ -69,6 +69,21 @@
             </div>
         </div>
     </div>
+    <div class="get-weather-container" ng-show="view.feature == 3">
+        <form>
+            <h3>Get your local weather conditions</h3>
+            <input type="text" ng-model="data.weatherZip" placeholder="enter a zip code">
+            <button class="btn btn-success" ng-click="data.getWeather()">submit</button>
+            <p class="weather-error" ng-show="data.weatherError">No cities match your search query</p>
+            <div class="weather-info" ng-show="data.weather.temp != undefined">
+                <img ng-src="{{data.weather.img}}" alt="weather-image">
+                <span>{{data.weather.city}}</span>
+                <h3>{{data.weather.temp}}</h3>
+                <h3>{{data.weather.conditions}}</h3>
+                <small>Powered by Weather Underground.</small>
+            </div>
+        </form>
+    </div>
     <div class="features" ng-repeat="feature in data.features | orderBy : 'score' : reverse = true">
         <div class="feature" ng-show="view.main || view.feature == feature.id" >
             <div class="feature-wrapper" ng-click="data.select(feature.id)">

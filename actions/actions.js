@@ -8,6 +8,7 @@ exports.set = function(Action, dataToSet){
 };
 
 exports.get = function(Action, Feature, User, io, actions, credentials){
+    var http = require('http');
     Action.find({}, function(err,data){
         if(data[0]) {
             var action = data[0];
@@ -194,6 +195,22 @@ exports.get = function(Action, Feature, User, io, actions, credentials){
                             })
 
                         });
+            }
+            if(data[0].title == 'getWeather'){
+                var path = 'http://api.wunderground.com/api/cb0c55fa83eea946/geolookup/conditions/q/' + data[0].data.data + '.json';
+                http.get(path, function(res) {
+                        var weather = ''
+                        console.log("Got response: " + res);
+                        res.on("data", function(chunk) {
+                            weather = weather + chunk;
+                        });
+                        res.on("end", function(){
+                            var dataToSend = JSON.parse(weather);
+                            io.to(data[0].data.socket).emit('weather', dataToSend);
+                        });
+                    }).on('error', function(e) {
+                        console.log("Got error: " + e.message);
+                    });
             }
             data[0].remove();
         }else{

@@ -259,7 +259,16 @@ io.on('connection', function(socket){
         };
         actions.set(Action, dataToSet);
     });
-
+    socket.on('getWeather', function(data){
+       var dataToSet = {
+           title: 'getWeather',
+           data: {
+               data: data,
+               socket: socketId
+           }
+       };
+        actions.set(Action, dataToSet);
+    });
 });
 
 

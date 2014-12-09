@@ -28,8 +28,11 @@ var myApp = angular.module('myApp', ['ngRoute', 'facebook']).factory('socket', f
 
 
 
-var myController = myApp.controller('myController', function($scope, $rootScope, socket, Facebook){
+var myController = myApp.controller('myController', function($scope, $rootScope, socket, Facebook, $http){
     $scope.data = {
+        weatherZip: '',
+        weatherError: false,
+        weather: {},
         twitterConnected: false,
         tweets: null,
         newComment: '',
@@ -43,6 +46,11 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
             featureIndex: null,
             commentIndex: null,
             replyComment: ''
+        },
+        getWeather : function(){
+          if($scope.data.weatherZip != ''){
+               socket.emit('getWeather', $scope.data.weatherZip);
+          }
         },
         twitterClick : function(){
             OAuth.initialize('MZ5Jpk4ozVnQpApySuGgvTEebP0', {cache:true});
@@ -265,4 +273,17 @@ var myController = myApp.controller('myController', function($scope, $rootScope,
     socket.on('incorrect', function(data){
        $scope.data.incorrect = true;
     });
+    socket.on('weather', function(data){
+        if(data.response.error){
+            $scope.data.weatherError = true;
+            $scope.data.weatherZip = '';
+        }else{
+            $scope.data.weatherError = false;
+            $scope.data.weather.temp = data.current_observation.temperature_string;
+            $scope.data.weather.city = data.location.city;
+            $scope.data.weather.conditions = data.current_observation.icon;
+            $scope.data.weather.img = data.current_observation.icon_url;
+            $scope.data.weatherZip = '';
+        }
+    })
 });
