@@ -1,6 +1,6 @@
 {
   "name": "hackathon-redux",
-  "version": "0.0.1",
+  "version": "0.0.1-3",
   "description": "new project",
   "main": "app.js",
   "author": "Robbie Prevost",
@@ -10,5 +10,12 @@
     "express-session": "1.7.6",
     "socket.io": "1.0.x",
     "mongoose": "3.8.x"
+  },
+  "subdomain": "hackathon-redux",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "engines": {
+    "node": "0.10.x"
   }
 }

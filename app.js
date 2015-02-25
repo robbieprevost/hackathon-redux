@@ -6,7 +6,7 @@ var actions = require('./actions/actions');
 var io = require('socket.io').listen(http);
 
 
-mongoose.connect('mongodb://localhost:27017', function(){
+mongoose.connect('mongodb://nodejitsu:eccfb15e6d7e28efc4d0e0afcbaa58dd@troup.mongohq.com:10036/nodejitsudb1415612201', function(){
     console.log('mongoose connected');
 });
 
